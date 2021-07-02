@@ -1,23 +1,40 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.views.generic import View
 import json
-from django.views.generic import View
+from django.http.response import HttpResponse
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.decorators import api_view
 
-class Api1(View):
-    def post(self, request):
-        return HttpResponse("This is first api - POST")
-    def get(self, request):
-        return HttpResponse("This is first Api - GET")
+ATTRIBUTES = ['values', 'supported_values', 'invalid_trigger', 'key', 'support_multiple', 'pick_first']
+RESPONSE = ['filled', 'partially_filled', 'trigger', 'parameters']
 
-class Api2(View):
-    def post(self, request):
-        data = request.body
-        return HttpResponse("This is second Api - POST")
+@api_view(['POST'])
+def finite_entity(request):
+    body = json.loads(request.body.decode('utf-8'))
+    data = {}
+    try:
+        for attr in ATTRIBUTES:
+            data[attr] = body.get(attr)
+            if data[attr] == None:
+                return Response(attr.upper() + " Not sent in body", status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response("Internal Server Error -> " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    return Response(json.dumps(data), status=status.HTTP_200_OK)
+  
+@api_view(['POST'])
+def numeric_entity(request):
+    body = json.loads(request.body.decode('utf-8'))
+    data = {}
+    try:
+        for attr in ATTRIBUTES:
+            data[attr] = body.get(attr)
+            if data[attr] == None:
+                return Response(attr.upper() + " Not sent in body", status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response("Internal Server Error -> " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    return Response(json.dumps(data), status=status.HTTP_200_OK)
 
-    def get(self, request):
-        return HttpResponse("This is second Api - GET")
-
-class LandingPage():
-    def index(request):
-        return HttpResponse("This is the landing page.")
+@api_view(['GET', 'POST'])
+def index(request):
+    return HttpResponse("Welcome, this is working.")
