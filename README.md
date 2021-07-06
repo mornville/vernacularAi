@@ -6,7 +6,7 @@ Contains 2 POST Api as per the given requirements.
 - `git clone https://github.com/mornville/vernacularAi.git`
 - `cd vernacularAi`
 - Run Docker container as - `docker-compose up`
-- Approx size of Docker Image `931 MB`
+- Approx size of Docker Image `90.66 MB`
 
 ## Testing
 - Test whether docker container is up and running by sending a POST/GET to `http://localhost:8000/`
