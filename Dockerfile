@@ -1,6 +1,7 @@
-FROM python:3
+FROM python:alpine
 
 ENV PYTHONNUNBUFFERED 1
+
 
 RUN mkdir /app
 WORKDIR /app
